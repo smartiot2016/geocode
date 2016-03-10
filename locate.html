@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <script src="/node.js/locationlogger/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <script>
+      
+  //    var socket = io.connect();
+      var x = document.getElementById("demo");
+      var y,z;  
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    y=position.coords.latitude;
+    z=position.coords.longitude;
+    //alert(y);
+    //alert(z);
+    var locatedata={"latitude":y, "longtitude":z} ;
+    alert(locatedata.latitude);
+    alert(locatedata.longtitude);
+    
+    $.ajax({
+    type: 'POST',
+    url: 'https://demo-project-codetest.c9users.io/request',
+    data: {
+        "latitude":y,
+        "longtitude":z,
+    },
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    complete: callback,
+    processData : false,
+    success : function(){
+        console.log("data saved on log");
+    },
+    error : function(){
+        console.log("erreur")
+    }
+});
+    //x.innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;	
+    
+//socket.emit('coord',{"latitude":y, "longtitude":z} );
+  
+}
+
+      
+    </script>
+    <div>This is our socket.html file
+    
+    
+<button onclick="getLocation()">send location</button>
+
+<p id="demo">Location is</p>
+    </div>
+  </body>
+</html>
