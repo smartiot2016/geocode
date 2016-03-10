@@ -1,6 +1,28 @@
 var http = require("http");
     var url = require('url');
     var fs = require('fs');
+    
+    var mongoose = require('mongoose');
+
+var db = mongoose.connection;
+
+db.on('error', console.error);
+db.once('open', function() {
+  // Create your schemas and models here.
+});
+
+mongoose.connect('mongodb://localhost/test');
+
+var geodb= mongoose.Schema({
+
+  latitude: Number,
+longtitude: Number,
+timestamp:Timestamp,
+
+  
+
+});
+
 //var io = require('socket.io');
     var server = http.createServer(function(request, response){
         var path = url.parse(request.url).pathname;
@@ -17,7 +39,18 @@ var http = require("http");
                         response.writeHead(404);
                         response.write("opps this doesn't exist - 404");
                         response.end();
+                        
+                        var geolocation= new geo({
+
+                        latitude: latitude,
+                         longtitude: longitude,
+                         timestamp:Timestamp,});
+                         
                     }
+                    
+                    
+ 
+
                     else{
                         
                         response.writeHead(200, {"Content-Type": "text/html"});
